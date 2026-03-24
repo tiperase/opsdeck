@@ -1,0 +1,29 @@
+{
+  "name": "Opsdeck Control",
+  "description": "Single-profile MCP and A2A agent for operations planning, incident review, and workflow management.",
+  "url": "https://your-opsdeck-deployment.vercel.app",
+  "version": "1.0.0",
+  "author": "dataweb",
+  "capabilities": [
+    "mcp",
+    "a2a",
+    "tools",
+    "prompts",
+    "resources"
+  ],
+  "endpoints": {
+    "mcp": "https://your-opsdeck-deployment.vercel.app/mcp",
+    "a2a": "https://your-opsdeck-deployment.vercel.app/a2a",
+    "agentCard": "https://your-opsdeck-deployment.vercel.app/.well-known/agent-card.json"
+  },
+  "skills": [
+    {
+      "name": "incident_review",
+      "description": "Prompt template for reviewing a live or recent incident."
+    },
+    {
+      "name": "launch_plan",
+      "description": "Prompt template for feature launch planning."
+    }
+  ]
+}
