@@ -902,7 +902,7 @@ function buildUi() {
           </div>
           <div class="footer-grid">
             <div class="footer-links">
-              <a href="/mcp">View `/mcp`</a>
+              <a href="/mcp">View MCP endpoint</a>
               <a href="/resources/queue_snapshot">View resource</a>
             </div>
             <span class="meta">JSON-RPC + A2A ready</span>
