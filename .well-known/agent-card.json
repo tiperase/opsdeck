@@ -24,6 +24,62 @@
     {
       "name": "launch_plan",
       "description": "Prompt template for feature launch planning."
+    },
+    {
+      "name": "build_runbook",
+      "description": "Build runbooks for systems, teams, and recurring workflows."
+    },
+    {
+      "name": "triage_incident",
+      "description": "Create fast incident triage notes from raw reports."
+    },
+    {
+      "name": "draft_status",
+      "description": "Turn rough updates into polished status communications."
+    },
+    {
+      "name": "workflow_score",
+      "description": "Score workflows and surface operational improvements."
+    },
+    {
+      "name": "release_readiness",
+      "description": "Assess if a release is ready to ship and what blocks it."
+    },
+    {
+      "name": "backlog_triage",
+      "description": "Sort work by urgency, dependency, and operational impact."
+    },
+    {
+      "name": "support_brief",
+      "description": "Summarize support conditions, queues, and team pressure."
+    },
+    {
+      "name": "root_cause_map",
+      "description": "Break incidents into likely root causes and signals."
+    },
+    {
+      "name": "postmortem_writer",
+      "description": "Draft clean postmortems with actions and owners."
+    },
+    {
+      "name": "sla_watch",
+      "description": "Track service levels and identify response-time risk."
+    },
+    {
+      "name": "escalation_plan",
+      "description": "Build escalation paths for urgent customer or system issues."
+    },
+    {
+      "name": "ops_checklist",
+      "description": "Generate execution checklists for repeatable operational tasks."
+    },
+    {
+      "name": "stakeholder_update",
+      "description": "Prepare targeted updates for leadership and partner teams."
+    },
+    {
+      "name": "qa_handoff",
+      "description": "Package release context into clear QA and validation handoffs."
     }
   ]
 }
