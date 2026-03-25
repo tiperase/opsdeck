@@ -63,6 +63,24 @@ const profile = {
       arguments: [{ name: "feature", description: "Feature or release name", required: false }]
     }
   ],
+  skills: [
+    { name: "incident_review", description: "Prompt template for reviewing a live or recent incident." },
+    { name: "launch_plan", description: "Prompt template for feature launch planning." },
+    { name: "build_runbook", description: "Build runbooks for systems, teams, and recurring workflows." },
+    { name: "triage_incident", description: "Create fast incident triage notes from raw reports." },
+    { name: "draft_status", description: "Turn rough updates into polished status communications." },
+    { name: "workflow_score", description: "Score workflows and surface operational improvements." },
+    { name: "release_readiness", description: "Assess if a release is ready to ship and what blocks it." },
+    { name: "backlog_triage", description: "Sort work by urgency, dependency, and operational impact." },
+    { name: "support_brief", description: "Summarize support conditions, queues, and team pressure." },
+    { name: "root_cause_map", description: "Break incidents into likely root causes and signals." },
+    { name: "postmortem_writer", description: "Draft clean postmortems with actions and owners." },
+    { name: "sla_watch", description: "Track service levels and identify response-time risk." },
+    { name: "escalation_plan", description: "Build escalation paths for urgent customer or system issues." },
+    { name: "ops_checklist", description: "Generate execution checklists for repeatable operational tasks." },
+    { name: "stakeholder_update", description: "Prepare targeted updates for leadership and partner teams." },
+    { name: "qa_handoff", description: "Package release context into clear QA and validation handoffs." }
+  ],
   resources: [
     {
       uri: "resource://opsdeck/queue-snapshot",
@@ -113,7 +131,7 @@ function buildAgentCard(req) {
     author: profile.author,
     capabilities: ["mcp", "a2a", "tools", "prompts", "resources"],
     endpoints: { mcp: `${baseUrl}/mcp`, a2a: `${baseUrl}/a2a`, agentCard: `${baseUrl}/.well-known/agent-card.json` },
-    skills: profile.prompts.map((prompt) => ({ name: prompt.name, description: prompt.description }))
+    skills: profile.skills
   };
 }
 
@@ -197,7 +215,117 @@ function handleRpc(req, res) {
 }
 
 function buildUi() {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${profile.name}</title><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" /><style>:root{--page:${profile.theme.page};--panel:${profile.theme.panel};--panel-edge:${profile.theme.panelEdge};--accent:${profile.theme.accent};--accent-soft:${profile.theme.accentSoft};--glow:${profile.theme.glow};--text:#f4f7fb;--muted:#a9bfd9;--line:rgba(255,255,255,0.08)}*{box-sizing:border-box}body{margin:0;font-family:"Manrope",sans-serif;color:var(--text);background:radial-gradient(circle at top left,var(--glow),transparent 32%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent 25%),var(--page);min-height:100vh}.shell{max-width:1200px;margin:0 auto;padding:24px}.hero,.panel{border:1px solid var(--panel-edge);background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)),var(--panel);border-radius:28px;box-shadow:0 20px 60px rgba(0,0,0,0.28)}.hero{padding:28px}.eyebrow,.badge{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid var(--panel-edge);color:var(--accent-soft);background:rgba(255,255,255,0.05);font-size:12px;text-transform:uppercase;letter-spacing:.12em}h1,h2{margin:0;font-family:"Space Grotesk",sans-serif;letter-spacing:-.03em}h1{margin-top:16px;font-size:clamp(40px,8vw,72px);line-height:.95;max-width:10ch}p{color:var(--muted);line-height:1.7}.hero-grid,.main-grid,.stats,.endpoints{display:grid;gap:18px}.hero-grid{grid-template-columns:1.4fr .8fr;align-items:end}.main-grid{grid-template-columns:1.15fr .85fr;margin-top:24px}.stats,.endpoints{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:22px}.card,.endpoint{border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,0.03);padding:18px}.card strong,.endpoint strong{display:block;margin-top:10px;font-size:24px;font-family:"Space Grotesk",sans-serif}.list{display:grid;gap:12px}.item{padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,0.03)}.item strong{display:block;margin-bottom:6px}.endpoint code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.endpoint code{display:block;margin-top:10px;padding:12px;border-radius:14px;background:rgba(0,0,0,0.25);overflow-wrap:anywhere}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{border:0;cursor:pointer;border-radius:14px;padding:12px 16px;font:inherit;font-weight:800;color:#081019;background:linear-gradient(135deg,var(--accent),var(--accent-soft))}pre{margin:14px 0 0;min-height:260px;max-height:420px;overflow:auto;padding:16px;border-radius:18px;background:rgba(0,0,0,0.32);color:#d6dfec}@media (max-width:980px){.hero-grid,.main-grid,.stats,.endpoints{grid-template-columns:1fr}}@media (max-width:640px){.shell{padding:16px}h1{font-size:42px}}</style></head><body><div class="shell"><section class="hero"><div class="hero-grid"><div><span class="eyebrow">${profile.heroLabel}</span><h1>${profile.name}</h1><p>${profile.description}</p></div><div class="stats"><div class="card"><span class="badge">Tools</span><strong>${profile.tools.length}</strong><p>Callable MCP capabilities</p></div><div class="card"><span class="badge">Prompts</span><strong>${profile.prompts.length}</strong><p>Prompt templates for repeatable work</p></div><div class="card"><span class="badge">Resources</span><strong>${profile.resources.length}</strong><p>Readable context sources</p></div><div class="card"><span class="badge">Agents</span><strong>${Object.keys(profile.agents).length}</strong><p>Internal A2A collaborators</p></div></div></div></section><section class="main-grid"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;"><h2>Capabilities</h2><span class="badge">MCP</span></div><div class="list">${profile.tools.map((tool) => `<div class="item"><strong>${tool.name}</strong><p>${tool.description}</p></div>`).join("")}</div></div><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;"><h2>Endpoints</h2><span class="badge">Live</span></div><div class="endpoints"><div class="endpoint"><span class="badge">MCP</span><code>/mcp</code></div><div class="endpoint"><span class="badge">A2A</span><code>/a2a</code></div><div class="endpoint"><span class="badge">Agent Card</span><code>/.well-known/agent-card.json</code></div><div class="endpoint"><span class="badge">Resource</span><code>/resources/queue_snapshot</code></div></div></div><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;"><h2>Prompts & Resources</h2><span class="badge">Context</span></div><div class="list">${profile.prompts.map((prompt) => `<div class="item"><strong>${prompt.name}</strong><p>${prompt.description}</p></div>`).join("")}${profile.resources.map((resource) => `<div class="item"><strong>${resource.name}</strong><p>${resource.uri}</p></div>`).join("")}</div></div><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;"><h2>Interactive Tester</h2><span class="badge">JSON-RPC</span></div><div class="toolbar"><button id="initializeBtn">Initialize</button><button id="toolsBtn">Tools List</button><button id="toolCallBtn">Call First Tool</button><button id="resourceBtn">Read First Resource</button><button id="a2aBtn">Run A2A</button></div><pre id="output">Use the tester to inspect MCP and A2A responses.</pre></div></section></div><script>const sampleToolArgs={build_runbook:{system:"customer support escalation"},triage_incident:{incident:"API latency spike across billing"},draft_status:{update:"Launch stable, one blocker remains in payments"},workflow_score:{workflow:"release approval pipeline"},multi_agent:{task:"weekly launch review"}};async function postJson(body,endpoint){const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});return response.json()}document.getElementById("initializeBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:1,method:"initialize",params:{protocolVersion:"2024-11-05",capabilities:{},clientInfo:{name:"ui-tester",version:"1.0.0"}}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("toolsBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:2,method:"tools/list"},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("toolCallBtn").addEventListener("click",async function(){const firstTool="build_runbook";const data=await postJson({jsonrpc:"2.0",id:3,method:"tools/call",params:{name:firstTool,arguments:sampleToolArgs[firstTool]}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("resourceBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:4,method:"resources/read",params:{uri:"resource://opsdeck/queue-snapshot"}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("a2aBtn").addEventListener("click",async function(){const data=await postJson({agent:"coordinator",task:"weekly launch review"},"/a2a");document.getElementById("output").textContent=JSON.stringify(data,null,2)});</script></body></html>`;
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${profile.name}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--page:#090603;--panel:rgba(19,12,5,.9);--panel-edge:rgba(255,179,71,.18);--accent:#ff9f1c;--accent-soft:#ffd166;--glow:rgba(255,159,28,.22);--text:#fffaf2;--muted:#d8c6a9;--line:rgba(255,255,255,.09)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Manrope",sans-serif;color:var(--text);background:radial-gradient(circle at top left,var(--glow),transparent 30%),radial-gradient(circle at 85% 20%,rgba(255,209,102,.08),transparent 18%),linear-gradient(180deg,rgba(255,255,255,.02),transparent 24%),var(--page);min-height:100vh;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(circle at center,black,transparent 82%);pointer-events:none;opacity:.18}
+    .shell{max-width:1200px;margin:0 auto;padding:24px;position:relative}
+    .hero,.panel{border:1px solid var(--panel-edge);background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02)),var(--panel);border-radius:28px;box-shadow:0 24px 60px rgba(0,0,0,.34)}
+    .hero{padding:30px;position:relative;overflow:hidden;animation:fadeUp .7s ease both}
+    .hero::after,.hero::before{content:"";position:absolute;border-radius:999px;pointer-events:none}
+    .hero::after{width:260px;height:260px;right:-80px;top:-80px;background:radial-gradient(circle,var(--glow),transparent 65%);animation:floatOrb 7s ease-in-out infinite}
+    .hero::before{width:180px;height:180px;left:-30px;bottom:-50px;background:radial-gradient(circle,rgba(255,209,102,.12),transparent 70%);animation:floatOrb 9s ease-in-out infinite reverse}
+    .eyebrow,.badge,.logo-chip{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid var(--panel-edge);color:var(--accent-soft);background:rgba(255,255,255,.05);font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+    h1,h2{margin:0;font-family:"Space Grotesk",sans-serif;letter-spacing:-.03em}
+    h1{margin-top:16px;font-size:clamp(40px,8vw,74px);line-height:.95;max-width:11ch}
+    p{color:var(--muted);line-height:1.7}
+    .hero-grid,.main-grid,.stats,.endpoints,.logo-row{display:grid;gap:18px}
+    .hero-grid{grid-template-columns:1.3fr .9fr;align-items:end}
+    .main-grid{grid-template-columns:1.15fr .85fr;margin-top:24px}
+    .stats,.endpoints{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .logo-row{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:22px}
+    .panel{padding:22px;animation:fadeUp .8s ease both}
+    .panel:nth-of-type(2){animation-delay:.08s}.panel:nth-of-type(3){animation-delay:.16s}.panel:nth-of-type(4){animation-delay:.24s}
+    .card,.endpoint,.logo-tile{border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:18px;transform:translateY(0);transition:transform .22s ease,border-color .22s ease,background .22s ease}
+    .card:hover,.endpoint:hover,.logo-tile:hover,.item:hover{transform:translateY(-4px);border-color:rgba(255,209,102,.34);background:rgba(255,255,255,.05)}
+    .card strong,.endpoint strong,.logo-mark{display:block;margin-top:10px;font-size:24px;font-family:"Space Grotesk",sans-serif}
+    .logo-tile{display:flex;align-items:center;gap:14px;animation:pulseGlow 4s ease-in-out infinite}
+    .logo-mark{margin:0;width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-soft));color:#281100;font-size:14px;box-shadow:0 10px 24px rgba(255,159,28,.22)}
+    .list{display:grid;gap:12px}
+    .item{padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:transform .2s ease,border-color .2s ease,background .2s ease}
+    .item strong{display:block;margin-bottom:6px}
+    .endpoint code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .endpoint code{display:block;margin-top:10px;padding:12px;border-radius:14px;background:rgba(0,0,0,.26);overflow-wrap:anywhere;color:#ffe7b8}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{border:0;cursor:pointer;border-radius:14px;padding:12px 16px;font:inherit;font-weight:800;color:#2a1400;background:linear-gradient(135deg,var(--accent),var(--accent-soft));box-shadow:0 10px 26px rgba(255,159,28,.18)}
+    button:hover{transform:translateY(-2px);filter:brightness(1.03)}
+    pre{margin:14px 0 0;min-height:260px;max-height:420px;overflow:auto;padding:16px;border-radius:18px;background:rgba(0,0,0,.34);color:#ffe8c5;border:1px solid rgba(255,209,102,.12)}
+    .section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+    .section-copy{margin:0 0 18px;max-width:52ch}
+    @keyframes floatOrb{0%,100%{transform:translateY(0)}50%{transform:translateY(16px)}}
+    @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 rgba(255,159,28,0)}50%{box-shadow:0 0 0 1px rgba(255,209,102,.05),0 18px 34px rgba(255,159,28,.1)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    @media (max-width:980px){.hero-grid,.main-grid,.stats,.endpoints,.logo-row{grid-template-columns:1fr}}
+    @media (max-width:640px){.shell{padding:16px}h1{font-size:42px}.hero,.panel{border-radius:24px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">${profile.heroLabel}</span>
+          <h1>${profile.name}</h1>
+          <p>${profile.description}</p>
+          <div class="logo-row">
+            <div class="logo-tile"><div class="logo-mark">OC</div><div><span class="logo-chip">Core</span><p>Ops control</p></div></div>
+            <div class="logo-tile"><div class="logo-mark">MCP</div><div><span class="logo-chip">Protocol</span><p>JSON-RPC surface</p></div></div>
+            <div class="logo-tile"><div class="logo-mark">A2A</div><div><span class="logo-chip">Agents</span><p>Coordinator chain</p></div></div>
+            <div class="logo-tile"><div class="logo-mark">OPS</div><div><span class="logo-chip">Runtime</span><p>Release desk</p></div></div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="card"><span class="badge">Tools</span><strong>${profile.tools.length}</strong><p>Callable MCP capabilities</p></div>
+          <div class="card"><span class="badge">Prompts</span><strong>${profile.prompts.length}</strong><p>Prompt templates for repeatable work</p></div>
+          <div class="card"><span class="badge">Resources</span><strong>${profile.resources.length}</strong><p>Readable context sources</p></div>
+          <div class="card"><span class="badge">Agents</span><strong>${Object.keys(profile.agents).length}</strong><p>Internal A2A collaborators</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="panel">
+        <div class="section-title"><h2>Capabilities</h2><span class="badge">MCP</span></div>
+        <p class="section-copy">Operational workflows built for launches, incident response, triage, and post-release coordination.</p>
+        <div class="list">${profile.tools.map((tool) => `<div class="item"><strong>${tool.name}</strong><p>${tool.description}</p></div>`).join("")}</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"><h2>Endpoints</h2><span class="badge">Live</span></div>
+        <p class="section-copy">Route scanners and clients into the correct Opsdeck surfaces.</p>
+        <div class="endpoints">
+          <div class="endpoint"><span class="badge">MCP</span><code>/mcp</code></div>
+          <div class="endpoint"><span class="badge">A2A</span><code>/a2a</code></div>
+          <div class="endpoint"><span class="badge">Agent Card</span><code>/.well-known/agent-card.json</code></div>
+          <div class="endpoint"><span class="badge">Resource</span><code>/resources/queue_snapshot</code></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"><h2>Prompts and Resources</h2><span class="badge">Context</span></div>
+        <p class="section-copy">Reusable operator context for reviews, launch prep, and support intelligence.</p>
+        <div class="list">${profile.prompts.map((prompt) => `<div class="item"><strong>${prompt.name}</strong><p>${prompt.description}</p></div>`).join("")}${profile.resources.map((resource) => `<div class="item"><strong>${resource.name}</strong><p>${resource.uri}</p></div>`).join("")}</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"><h2>Interactive Tester</h2><span class="badge">JSON-RPC</span></div>
+        <p class="section-copy">Test the runtime directly from the landing page without changing the current structure.</p>
+        <div class="toolbar"><button id="initializeBtn">Initialize</button><button id="toolsBtn">Tools List</button><button id="toolCallBtn">Call First Tool</button><button id="resourceBtn">Read First Resource</button><button id="a2aBtn">Run A2A</button></div>
+        <pre id="output">Use the tester to inspect MCP and A2A responses.</pre>
+      </div>
+    </section>
+  </div>
+  <script>const sampleToolArgs={build_runbook:{system:"customer support escalation"},triage_incident:{incident:"API latency spike across billing"},draft_status:{update:"Launch stable, one blocker remains in payments"},workflow_score:{workflow:"release approval pipeline"},multi_agent:{task:"weekly launch review"}};async function postJson(body,endpoint){const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});return response.json()}document.getElementById("initializeBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:1,method:"initialize",params:{protocolVersion:"2024-11-05",capabilities:{},clientInfo:{name:"ui-tester",version:"1.0.0"}}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("toolsBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:2,method:"tools/list"},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("toolCallBtn").addEventListener("click",async function(){const firstTool="build_runbook";const data=await postJson({jsonrpc:"2.0",id:3,method:"tools/call",params:{name:firstTool,arguments:sampleToolArgs[firstTool]}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("resourceBtn").addEventListener("click",async function(){const data=await postJson({jsonrpc:"2.0",id:4,method:"resources/read",params:{uri:"resource://opsdeck/queue-snapshot"}},"/mcp");document.getElementById("output").textContent=JSON.stringify(data,null,2)});document.getElementById("a2aBtn").addEventListener("click",async function(){const data=await postJson({agent:"coordinator",task:"weekly launch review"},"/a2a");document.getElementById("output").textContent=JSON.stringify(data,null,2)});</script></body></html>`;
 }
 
 app.get("/.well-known/agent-card.json", (req, res) => { res.json(buildAgentCard(req)); });
